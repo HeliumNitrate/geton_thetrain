@@ -33,9 +33,9 @@ class TrainMultiClass():
             self.model.train()
             for x_batch, y_batch in self.train_dl:
                 
-                batch_index_tr += 1                
-                self.batch_counter(epoch, batch_index_tr, self.train_dl)
-                
+                batch_index_tr = self.batch_counter(
+                    epoch, batch_index_tr, self.train_dl
+                )                
                 self.acc_hist_tr, self.loss_hist_tr = self.train(
                     epoch, x_batch, y_batch
                 )
@@ -45,8 +45,8 @@ class TrainMultiClass():
             self.model.eval()
             with torch.no_grad():
                 for x_batch, y_batch in self.valid_dl:
-                    batch_index_val += 1
-                    self.batch_counter(
+                    
+                    batch_index_val = self.batch_counter(
                         epoch, batch_index_val, self.valid_dl
                     )
                     self.acc_hist_val, self.loss_hist_val = self.validation(
@@ -108,6 +108,7 @@ class TrainMultiClass():
     
     def batch_counter(self, epoch, batch_index, dl):
         
+        batch_index += 1
         num_of_batches = int(np.ceil(len(dl.dataset) / self.batch_size))
         
         if np.remainder(batch_index, 10) == 0:
